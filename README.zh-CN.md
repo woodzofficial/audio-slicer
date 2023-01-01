@@ -1,6 +1,10 @@
 # 音频切片机
 这是一个 Python 脚本，通过静音检测来分割音频
 
+## 屏幕截图
+
+![image](https://raw.githubusercontent.com/flutydeer/audio-slicer/main/assets/screenshot_1.jpg)
+
 ## 算法
 
 ### 静音检测
