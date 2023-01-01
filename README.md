@@ -6,7 +6,7 @@ Python script that slices audio with silence detection
 
 ## Screenshots
 
-![image](https://raw.githubusercontent.com/flutydeer/audio-slicer/main/assets/screenshot_1.jpg)
+![image](https://github.com/flutydeer/audio-slicer/blob/main/screenshot_1.jpg?raw=true)
 
 ## Algorithm
 

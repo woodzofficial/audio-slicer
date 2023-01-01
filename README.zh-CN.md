@@ -3,7 +3,7 @@
 
 ## 屏幕截图
 
-![image](https://raw.githubusercontent.com/flutydeer/audio-slicer/main/assets/screenshot_1.jpg)
+![image](https://github.com/flutydeer/audio-slicer/blob/main/screenshot_1.jpg?raw=true)
 
 ## 算法
 
