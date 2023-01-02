@@ -135,12 +135,12 @@
            <item row="2" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Large Sliding Window Size (ms)</string>
+              <string>Minimum Interval (ms)</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEditWinLarge">
+            <widget class="QLineEdit" name="lineEditMinInterval">
              <property name="text">
               <string>300</string>
              </property>
@@ -152,14 +152,14 @@
            <item row="3" column="0">
             <widget class="QLabel" name="label_5">
              <property name="text">
-              <string>Small Sliding Window Size (ms)</string>
+              <string>Hop Size (ms)</string>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="lineEditWinSmall">
+            <widget class="QLineEdit" name="lineEditHopSize">
              <property name="text">
-              <string>20</string>
+              <string>10</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

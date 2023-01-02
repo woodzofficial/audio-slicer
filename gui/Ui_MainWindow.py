@@ -112,22 +112,22 @@ class Ui_MainWindow(object):
 
         self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_4)
 
-        self.lineEditWinLarge = QLineEdit(self.groupBox_2)
-        self.lineEditWinLarge.setObjectName(u"lineEditWinLarge")
-        self.lineEditWinLarge.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.lineEditMinInterval = QLineEdit(self.groupBox_2)
+        self.lineEditMinInterval.setObjectName(u"lineEditMinInterval")
+        self.lineEditMinInterval.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.lineEditWinLarge)
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.lineEditMinInterval)
 
         self.label_5 = QLabel(self.groupBox_2)
         self.label_5.setObjectName(u"label_5")
 
         self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_5)
 
-        self.lineEditWinSmall = QLineEdit(self.groupBox_2)
-        self.lineEditWinSmall.setObjectName(u"lineEditWinSmall")
-        self.lineEditWinSmall.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.lineEditHopSize = QLineEdit(self.groupBox_2)
+        self.lineEditHopSize.setObjectName(u"lineEditHopSize")
+        self.lineEditHopSize.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.lineEditWinSmall)
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.lineEditHopSize)
 
         self.label_6 = QLabel(self.groupBox_2)
         self.label_6.setObjectName(u"label_6")
@@ -212,10 +212,10 @@ class Ui_MainWindow(object):
         self.lineEditThreshold.setText(QCoreApplication.translate("MainWindow", u"-40", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Minimum Length (ms)", None))
         self.lineEditMinLen.setText(QCoreApplication.translate("MainWindow", u"5000", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Large Sliding Window Size (ms)", None))
-        self.lineEditWinLarge.setText(QCoreApplication.translate("MainWindow", u"300", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Small Sliding Window Size (ms)", None))
-        self.lineEditWinSmall.setText(QCoreApplication.translate("MainWindow", u"20", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Minimum Interval (ms)", None))
+        self.lineEditMinInterval.setText(QCoreApplication.translate("MainWindow", u"300", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hop Size (ms)", None))
+        self.lineEditHopSize.setText(QCoreApplication.translate("MainWindow", u"10", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Maximum Silence Length (ms)", None))
         self.lineEditMaxSilence.setText(QCoreApplication.translate("MainWindow", u"1000", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Output Directory (default to the same as the audio)", None))
@@ -224,4 +224,3 @@ class Ui_MainWindow(object):
         self.pushButtonAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.pushButtonStart.setText(QCoreApplication.translate("MainWindow", u"Start", None))
     # retranslateUi
-

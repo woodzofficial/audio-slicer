@@ -5,7 +5,7 @@ import soundfile
 
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
-from slicer import Slicer
+from slicer2 import Slicer
 
 from gui.Ui_MainWindow import Ui_MainWindow
 
@@ -84,8 +84,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButtonClearList.setEnabled(False)
         self.ui.lineEditThreshold.setEnabled(False)
         self.ui.lineEditMinLen.setEnabled(False)
-        self.ui.lineEditWinLarge.setEnabled(False)
-        self.ui.lineEditWinSmall.setEnabled(False)
+        self.ui.lineEditMinInterval.setEnabled(False)
+        self.ui.lineEditHopSize.setEnabled(False)
         self.ui.lineEditMaxSilence.setEnabled(False)
         self.ui.lineEditOutputDir.setEnabled(False)
         self.ui.pushButtonBrowse.setEnabled(False)
@@ -101,11 +101,11 @@ class MainWindow(QMainWindow):
                 audio, sr = librosa.load(self.filename, sr=None)
                 slicer = Slicer(
                     sr=sr,
-                    db_threshold=float(self.win.ui.lineEditThreshold.text()),
+                    threshold=float(self.win.ui.lineEditThreshold.text()),
                     min_length=int(self.win.ui.lineEditMinLen.text()),
-                    win_l=int(self.win.ui.lineEditWinLarge.text()),
-                    win_s=int(self.win.ui.lineEditWinSmall.text()),
-                    max_silence_kept=int(self.win.ui.lineEditMaxSilence.text())
+                    min_interval=int(self.win.ui.lineEditMinInterval.text()),
+                    hop_size=int(self.win.ui.lineEditHopSize.text()),
+                    max_sil_kept=int(self.win.ui.lineEditMaxSilence.text())
                 )
                 chunks = slicer.slice(audio)
                 out_dir = self.win.ui.lineEditOutputDir.text()
