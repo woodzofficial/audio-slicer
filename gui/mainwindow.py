@@ -35,6 +35,9 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle(QApplication.applicationName())
 
+        # Must set to accept drag and drop events
+        self.setAcceptDrops(True)
+
     def _q_browse_output_dir(self):
         path = QFileDialog.getExistingDirectory(
             self, "Browse Output Directory", ".")
@@ -71,95 +74,96 @@ class MainWindow(QMainWindow):
             return
 
         item_count = self.ui.listWidgetTaskList.count()
-
         if item_count == 0:
             return
 
-        self.ui.progressBar.setMaximum(item_count)
-        self.ui.progressBar.setValue(0)
-        self.ui.pushButtonStart.setText('Slicing...')
-        self.ui.pushButtonStart.setEnabled(False)
-        self.ui.pushButtonAddFiles.setEnabled(False)
-        self.ui.listWidgetTaskList.setEnabled(False)
-        self.ui.pushButtonClearList.setEnabled(False)
-        self.ui.lineEditThreshold.setEnabled(False)
-        self.ui.lineEditMinLen.setEnabled(False)
-        self.ui.lineEditMinInterval.setEnabled(False)
-        self.ui.lineEditHopSize.setEnabled(False)
-        self.ui.lineEditMaxSilence.setEnabled(False)
-        self.ui.lineEditOutputDir.setEnabled(False)
-        self.ui.pushButtonBrowse.setEnabled(False)
-
         class WorkThread(QThread):
-            def __init__(self, filename: str, window: MainWindow):
+            oneFinished = Signal()
+
+            def __init__(self, filenames: list[str], window: MainWindow):
                 super().__init__()
 
-                self.filename = filename
+                self.filenames = filenames
                 self.win = window
 
             def run(self):
-                audio, sr = librosa.load(self.filename, sr=None)
-                slicer = Slicer(
-                    sr=sr,
-                    threshold=float(self.win.ui.lineEditThreshold.text()),
-                    min_length=int(self.win.ui.lineEditMinLen.text()),
-                    min_interval=int(self.win.ui.lineEditMinInterval.text()),
-                    hop_size=int(self.win.ui.lineEditHopSize.text()),
-                    max_sil_kept=int(self.win.ui.lineEditMaxSilence.text())
-                )
-                chunks = slicer.slice(audio)
-                out_dir = self.win.ui.lineEditOutputDir.text()
-                if out_dir == '':
-                    out_dir = os.path.dirname(os.path.abspath(self.filename))
-                for i, chunk in enumerate(chunks):
-                    path = os.path.join(out_dir, f'%s_%d.wav' % (os.path.basename(self.filename)
-                                                                 .rsplit('.', maxsplit=1)[0], i))
-                    soundfile.write(path, chunk, sr)
+                for filename in self.filenames:
+                    audio, sr = librosa.load(filename, sr=None)
+                    slicer = Slicer(
+                        sr=sr,
+                        threshold=float(self.win.ui.lineEditThreshold.text()),
+                        min_length=int(self.win.ui.lineEditMinLen.text()),
+                        min_interval=int(self.win.ui.lineEditMinInterval.text()),
+                        hop_size=int(self.win.ui.lineEditHopSize.text()),
+                        max_sil_kept=int(self.win.ui.lineEditMaxSilence.text())
+                    )
+                    chunks = slicer.slice(audio)
+                    out_dir = self.win.ui.lineEditOutputDir.text()
+                    if out_dir == '':
+                        out_dir = os.path.dirname(os.path.abspath(filename))
+                    for i, chunk in enumerate(chunks):
+                        path = os.path.join(out_dir, f'%s_%d.wav' % (os.path.basename(filename)
+                                                                    .rsplit('.', maxsplit=1)[0], i))
+                        soundfile.write(path, chunk, sr)
+                    
+                    self.oneFinished.emit()
 
-        self.workCount = item_count
-        self.workFinished = 0
-        self.processing = True
-
+        # Collect paths
+        paths :list[str] = []
         for i in range(0, item_count):
             item = self.ui.listWidgetTaskList.item(i)
             path = item.data(Qt.ItemDataRole.UserRole+1)  # Get full path
+            paths.append(path)
 
-            worker = WorkThread(path, self)
-            worker.finished.connect(self._q_threadFinished)
-            worker.start()
+        self.ui.progressBar.setMaximum(item_count)
+        self.ui.progressBar.setValue(0)
 
-            self.workers.append(worker)  # Collect in case of auto deletion
+        self.workCount = item_count
+        self.workFinished = 0
+        self.setProcessing(True)
 
-    def _q_threadFinished(self):
+        # Start work thread
+        worker = WorkThread(paths, self)
+        worker.oneFinished.connect(self._q_oneFinished)
+        worker.finished.connect(self._q_threadFinished)
+        worker.start()
+
+        self.workers.append(worker)  # Collect in case of auto deletion
+
+    def _q_oneFinished(self):
         self.workFinished += 1
         self.ui.progressBar.setValue(self.workFinished)
 
-        if self.workFinished == self.workCount:
-            # Join all workers
-            for worker in self.workers:
-                worker.wait()
-            self.workers.clear()
-            self.processing = False
+    def _q_threadFinished(self):
+        # Join all workers
+        for worker in self.workers:
+            worker.wait()
+        self.workers.clear()
+        self.setProcessing(False)
 
-            self.ui.pushButtonStart.setText('Start')
-            self.ui.pushButtonStart.setEnabled(True)
-            self.ui.pushButtonAddFiles.setEnabled(True)
-            self.ui.listWidgetTaskList.setEnabled(True)
-            self.ui.pushButtonClearList.setEnabled(True)
-            self.ui.lineEditThreshold.setEnabled(True)
-            self.ui.lineEditMinLen.setEnabled(True)
-            self.ui.lineEditMinInterval.setEnabled(True)
-            self.ui.lineEditHopSize.setEnabled(True)
-            self.ui.lineEditMaxSilence.setEnabled(True)
-            self.ui.lineEditOutputDir.setEnabled(True)
-            self.ui.pushButtonBrowse.setEnabled(True)
-            QMessageBox.information(
-                self, QApplication.applicationName(), "Slicing complete!")
+        QMessageBox.information(
+            self, QApplication.applicationName(), "Slicing complete!")
 
     def warningProcessNotFinished(self):
         QMessageBox.warning(self, QApplication.applicationName(),
                             "Please wait for slicing to complete!")
 
+    def setProcessing(self, processing: bool):
+        enabled = not processing
+        self.ui.pushButtonStart.setText("Slicing..." if processing else "Start")
+        self.ui.pushButtonStart.setEnabled(enabled)
+        self.ui.pushButtonAddFiles.setEnabled(enabled)
+        self.ui.listWidgetTaskList.setEnabled(enabled)
+        self.ui.pushButtonClearList.setEnabled(enabled)
+        self.ui.lineEditThreshold.setEnabled(enabled)
+        self.ui.lineEditMinLen.setEnabled(enabled)
+        self.ui.lineEditMinInterval.setEnabled(enabled)
+        self.ui.lineEditHopSize.setEnabled(enabled)
+        self.ui.lineEditMaxSilence.setEnabled(enabled)
+        self.ui.lineEditOutputDir.setEnabled(enabled)
+        self.ui.pushButtonBrowse.setEnabled(enabled)
+        self.processing = processing
+        
     def closeEvent(self, event):
         if self.processing:
             self.warningProcessNotFinished()
