@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         self.ui.progressBar.setValue(0)
 
         # State variables
-        self.workers:list[QThread] = []
+        self.workers: list[QThread] = []
         self.workCount = 0
         self.workFinished = 0
         self.processing = False
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
             item = QListWidgetItem()
             item.setText(QFileInfo(path).fileName())
             # Save full path at custom role
-            item.setData(Qt.ItemDataRole.UserRole+1, path)
+            item.setData(Qt.ItemDataRole.UserRole + 1, path)
             self.ui.listWidgetTaskList.addItem(item)
 
     def _q_clear_audio_list(self):
@@ -103,16 +103,16 @@ class MainWindow(QMainWindow):
                         out_dir = os.path.dirname(os.path.abspath(filename))
                     for i, chunk in enumerate(chunks):
                         path = os.path.join(out_dir, f'%s_%d.wav' % (os.path.basename(filename)
-                                                                    .rsplit('.', maxsplit=1)[0], i))
+                                                                     .rsplit('.', maxsplit=1)[0], i))
                         soundfile.write(path, chunk, sr)
-                    
+
                     self.oneFinished.emit()
 
         # Collect paths
-        paths :list[str] = []
+        paths: list[str] = []
         for i in range(0, item_count):
             item = self.ui.listWidgetTaskList.item(i)
-            path = item.data(Qt.ItemDataRole.UserRole+1)  # Get full path
+            path = item.data(Qt.ItemDataRole.UserRole + 1)  # Get full path
             paths.append(path)
 
         self.ui.progressBar.setMaximum(item_count)
@@ -163,8 +163,31 @@ class MainWindow(QMainWindow):
         self.ui.lineEditOutputDir.setEnabled(enabled)
         self.ui.pushButtonBrowse.setEnabled(enabled)
         self.processing = processing
-        
+
+    # Event Handlers
     def closeEvent(self, event):
         if self.processing:
             self.warningProcessNotFinished()
             event.ignore()
+
+    def dragEnterEvent(self, event):
+        paths = str.splitlines(event.mimeData().text())
+        has_wav = False
+        for path in paths:
+            ext = os.path.splitext(path)[1]
+            if ext.lower() == '.wav':
+                has_wav = True
+                break
+        if has_wav:
+            event.accept()
+
+    def dropEvent(self, event):
+        paths = str.splitlines(event.mimeData().text())
+        for path in paths:
+            ext = os.path.splitext(path)[1]
+            if ext.lower() != '.wav':
+                continue
+            item = QListWidgetItem()
+            item.setText(QFileInfo(path).fileName())
+            item.setData(Qt.ItemDataRole.UserRole + 1, path.replace('file:///', ''))
+            self.ui.listWidgetTaskList.addItem(item)
