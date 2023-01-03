@@ -5,6 +5,7 @@ import soundfile
 
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
+from PySide6.QtGui import *
 from slicer2 import Slicer
 
 from gui.Ui_MainWindow import Ui_MainWindow
@@ -26,6 +27,13 @@ class MainWindow(QMainWindow):
         self.ui.progressBar.setMinimum(0)
         self.ui.progressBar.setMaximum(100)
         self.ui.progressBar.setValue(0)
+
+        validator = QRegularExpressionValidator(QRegularExpression(r"\d+"))
+        self.ui.lineEditThreshold.setValidator(QDoubleValidator())
+        self.ui.lineEditMinLen.setValidator(validator)
+        self.ui.lineEditMinInterval.setValidator(validator)
+        self.ui.lineEditHopSize.setValidator(validator)
+        self.ui.lineEditMaxSilence.setValidator(validator)
 
         # State variables
         self.workers: list[QThread] = []
