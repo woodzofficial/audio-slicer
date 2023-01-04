@@ -18,4 +18,4 @@ Remove-Item ./dist/slicer-gui/PySide6/Qt6Svg.dll
 Remove-Item -Path ./dist/slicer-gui/PySide6/translations -Recurse
 
 # Compress files
-Compress-Archive -Path .\dist\slicer-gui -DestinationPath .\dist\slicer-gui.zip
+Compress-Archive -Path .\dist\slicer-gui -DestinationPath .\dist\slicer-gui-windows.zip -Force
