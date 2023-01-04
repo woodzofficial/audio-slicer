@@ -13,7 +13,7 @@ The 1.0 version can be found [here](https://github.com/openvpi/audio-slicer/tree
 
 ## Screenshots
 
-![image](https://github.com/flutydeer/audio-slicer/blob/main/screenshot_1.jpg?raw=true)
+![image](./screenshot_1.jpg)
 
 ## Algorithm
 
@@ -28,8 +28,7 @@ Once the valid (sound) part reached **min length** since last slice and a silent
 ## Requirements
 
 ```shell
-pip install librosa
-pip install soundfile  # Optional. You can use any library you like to write audio files.
+pip install soundfile
 pip install PySide6
 ```
 

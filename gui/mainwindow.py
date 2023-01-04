@@ -74,7 +74,8 @@ class MainWindow(QMainWindow):
         self.ui.listWidgetTaskList.clear()
 
     def _q_about(self):
-        QMessageBox.information(self, "About", "1.0.0.0\nCopyright 2020-2022 OpenVPI Team")
+        QMessageBox.information(
+            self, "About", "1.0.0.0\nCopyright 2020-2022 OpenVPI Team")
 
     def _q_start(self):
         if self.processing:
@@ -105,7 +106,8 @@ class MainWindow(QMainWindow):
                         sr=sr,
                         threshold=float(self.win.ui.lineEditThreshold.text()),
                         min_length=int(self.win.ui.lineEditMinLen.text()),
-                        min_interval=int(self.win.ui.lineEditMinInterval.text()),
+                        min_interval=int(
+                            self.win.ui.lineEditMinInterval.text()),
                         hop_size=int(self.win.ui.lineEditHopSize.text()),
                         max_sil_kept=int(self.win.ui.lineEditMaxSilence.text())
                     )
@@ -113,6 +115,12 @@ class MainWindow(QMainWindow):
                     out_dir = self.win.ui.lineEditOutputDir.text()
                     if out_dir == '':
                         out_dir = os.path.dirname(os.path.abspath(filename))
+                    else:
+                        # Make dir if not exists
+                        info = QDir(out_dir)
+                        if not info.exists():
+                            info.mkpath(out_dir)
+
                     for i, chunk in enumerate(chunks):
                         path = os.path.join(out_dir, f'%s_%d.wav' % (os.path.basename(filename)
                                                                      .rsplit('.', maxsplit=1)[0], i))
@@ -164,7 +172,8 @@ class MainWindow(QMainWindow):
 
     def setProcessing(self, processing: bool):
         enabled = not processing
-        self.ui.pushButtonStart.setText("Slicing..." if processing else "Start")
+        self.ui.pushButtonStart.setText(
+            "Slicing..." if processing else "Start")
         self.ui.pushButtonStart.setEnabled(enabled)
         self.ui.pushButtonAddFiles.setEnabled(enabled)
         self.ui.listWidgetTaskList.setEnabled(enabled)
@@ -203,5 +212,6 @@ class MainWindow(QMainWindow):
                 continue
             item = QListWidgetItem()
             item.setText(QFileInfo(path).fileName())
-            item.setData(Qt.ItemDataRole.UserRole + 1, path.replace('file:///', ''))
+            item.setData(Qt.ItemDataRole.UserRole + 1,
+                         path.replace('file:///', ''))
             self.ui.listWidgetTaskList.addItem(item)

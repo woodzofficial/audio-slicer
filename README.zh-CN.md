@@ -3,7 +3,7 @@
 
 ## 屏幕截图
 
-![image](https://github.com/flutydeer/audio-slicer/blob/main/screenshot_1.jpg?raw=true)
+![image](./screenshot_1.jpg)
 
 ## 算法
 
@@ -18,8 +18,8 @@
 ## 安装依赖
 
 ```shell
-pip install librosa
-pip install soundfile  # Optional. You can use any library you like to write audio files.
+pip install soundfile
+pip install PySide6
 ```
 
 或者
