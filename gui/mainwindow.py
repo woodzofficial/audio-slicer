@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
         self.ui.listWidgetTaskList.clear()
 
     def _q_about(self):
-        QMessageBox.information(self, "About", "OpenVPI Team")
+        QMessageBox.information(self, "About", "1.0.0.0\nCopyright 2020-2022 OpenVPI Team")
 
     def _q_start(self):
         if self.processing:
