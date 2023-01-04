@@ -1,7 +1,7 @@
 import os
 
-import librosa
 import soundfile
+import numpy as np
 
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -96,7 +96,11 @@ class MainWindow(QMainWindow):
 
             def run(self):
                 for filename in self.filenames:
-                    audio, sr = librosa.load(filename, sr=None)
+                    audio, sr = soundfile.read(filename, dtype=np.float32)
+                    is_mono = True
+                    if len(audio.shape) > 1:
+                        is_mono = False
+                        audio = audio.T
                     slicer = Slicer(
                         sr=sr,
                         threshold=float(self.win.ui.lineEditThreshold.text()),
@@ -112,6 +116,8 @@ class MainWindow(QMainWindow):
                     for i, chunk in enumerate(chunks):
                         path = os.path.join(out_dir, f'%s_%d.wav' % (os.path.basename(filename)
                                                                      .rsplit('.', maxsplit=1)[0], i))
+                        if not is_mono:
+                            chunk = chunk.T
                         soundfile.write(path, chunk, sr)
 
                     self.oneFinished.emit()
