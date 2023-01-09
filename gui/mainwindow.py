@@ -194,9 +194,10 @@ class MainWindow(QMainWindow):
             event.ignore()
 
     def dragEnterEvent(self, event):
-        paths = str.splitlines(event.mimeData().text())
+        urls = event.mimeData().urls()
         has_wav = False
-        for path in paths:
+        for url in urls:
+            path = url.toLocalFile()
             ext = os.path.splitext(path)[1]
             if ext.lower() == '.wav':
                 has_wav = True
@@ -205,13 +206,14 @@ class MainWindow(QMainWindow):
             event.accept()
 
     def dropEvent(self, event):
-        paths = str.splitlines(event.mimeData().text())
-        for path in paths:
+        urls = event.mimeData().urls()
+        for url in urls:
+            path = url.toLocalFile()
             ext = os.path.splitext(path)[1]
             if ext.lower() != '.wav':
                 continue
             item = QListWidgetItem()
             item.setText(QFileInfo(path).fileName())
             item.setData(Qt.ItemDataRole.UserRole + 1,
-                         path.replace('file:///', ''))
+                         path)
             self.ui.listWidgetTaskList.addItem(item)
