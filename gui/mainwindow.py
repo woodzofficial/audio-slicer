@@ -2,7 +2,9 @@ import os
 
 import soundfile
 import numpy as np
+import urllib
 
+from typing import List
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
@@ -89,7 +91,7 @@ class MainWindow(QMainWindow):
         class WorkThread(QThread):
             oneFinished = Signal()
 
-            def __init__(self, filenames: list[str], window: MainWindow):
+            def __init__(self, filenames: List[str], window: MainWindow):
                 super().__init__()
 
                 self.filenames = filenames
