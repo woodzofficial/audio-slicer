@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
 
     def _q_about(self):
         QMessageBox.information(
-            self, "About", "1.0.0.0\nCopyright 2020-2022 OpenVPI Team")
+            self, "About", "Audio Slicer v1.0.1\nCopyright 2020-2023 OpenVPI Team")
 
     def _q_start(self):
         if self.processing:
