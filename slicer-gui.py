@@ -7,7 +7,6 @@ from PySide6.QtGui import QFont
 import gui.mainwindow
 
 if __name__ == '__main__':
-    QApplication.setAttribute(QtCore.Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
     
     app = QApplication(sys.argv)
     app.setApplicationName("Audio Slicer")
