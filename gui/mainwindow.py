@@ -210,7 +210,7 @@ class MainWindow(QMainWindow):
     def dropEvent(self, event):
         urls = event.mimeData().urls()
         for url in urls:
-            path = url.toLocalFile()
+            path = urllib.parse.unquote(url.toLocalFile())
             ext = os.path.splitext(path)[1]
             if ext.lower() != '.wav':
                 continue
