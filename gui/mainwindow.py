@@ -199,6 +199,8 @@ class MainWindow(QMainWindow):
         urls = event.mimeData().urls()
         has_wav = False
         for url in urls:
+            if not url.isLocalFile():
+                continue
             path = url.toLocalFile()
             ext = os.path.splitext(path)[1]
             if ext.lower() == '.wav':
@@ -210,7 +212,9 @@ class MainWindow(QMainWindow):
     def dropEvent(self, event):
         urls = event.mimeData().urls()
         for url in urls:
-            path = urllib.parse.unquote(url.toLocalFile())
+            if not url.isLocalFile():
+                continue
+            path = url.toLocalFile()
             ext = os.path.splitext(path)[1]
             if ext.lower() != '.wav':
                 continue
