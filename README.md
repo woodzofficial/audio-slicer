@@ -2,51 +2,48 @@
 
 A simple GUI application that slices audio with silence detection, based on [audio-slicer](https://github.com/openvpi/audio-slicer).
 
----
-
-This is the 2.0 version of audio slicer, which provides:
-
-- Great improvements on speed (400x compared to previous 15x)
-- Enhanced slicing logic with fewer errors
-
-The 1.0 version can be found [here](https://github.com/openvpi/audio-slicer/tree/old).
+[中文文档](./README.zh-CN.md)
 
 ## Screenshots
 
 ![image](./screenshot_1.jpg)
 
-## Algorithm
+## Usage
 
-### Silence detection
+### Windows
 
-This script uses RMS (root mean score) to measure the quiteness of the audio and detect silent parts. RMS values of each frame (frame length set as **hop size**) are calculated and all frames with an RMS below the **threshold** will be regarded as silent frames.
+- Download and extract the latest release [here](https://github.com/flutydeer/audio-slicer/releases).
 
-### Audio slicing
+- Run "slicer-gui.exe".
 
-Once the valid (sound) part reached **min length** since last slice and a silent part longer than **min interval** are detected, the audio will be sliced apart from the frame(s) with the lowest RMS value within the silent area. Long silence parts may be deleted.
+### MacOS & Linux
 
-## Requirements
+- Clone the repository.
 
-```shell
-pip install soundfile
-pip install PySide6
-```
-
-or
+- Run the following command to install requirements:
 
 ```shell
 pip install -r requirements.txt
 ```
 
-## Usage
-
-Run the following command to launch GUI:
+- Run the following command to launch GUI:
 
 ```Shell
 python slicer-gui.py
 ```
 
 Just simply add your audio files to the task list by clicking the "Add Audio Files..." button or dragging and drop them to the window, click the "Start" button and wait for it to finish. The progress bar cannot indicate the progress of individual tasks, so it keeps 0% until finished when there is only 1 task in the task list.
+## Algorithm
+
+### Silence detection
+
+This application uses RMS (root mean score) to measure the quiteness of the audio and detect silent parts. RMS values of each frame (frame length set as **hop size**) are calculated and all frames with an RMS below the **threshold** will be regarded as silent frames.
+
+### Audio slicing
+
+Once the valid (sound) part reached **min length** since last slice and a silent part longer than **min interval** are detected, the audio will be sliced apart from the frame(s) with the lowest RMS value within the silent area. Long silence parts may be deleted.
+
+
 
 ## Parameters
 
@@ -60,7 +57,7 @@ The minimum length required for each sliced audio clip, presented in millisecond
 
 ### Minimum Interval
 
-The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this script is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 300.
+The minimum length for a silence part to be sliced, presented in milliseconds. Set this value smaller if your audio contains only short breaks. The smaller this value is, the more sliced audio clips this application is likely to generate. Note that this value must be smaller than min_length and larger than hop_size. Defaults to 300.
 
 ### Hop Size
 
@@ -72,5 +69,4 @@ The maximum silence length kept around the sliced audio, presented in millisecon
 
 ## Performance
 
-This script runs over 400x faster than real-time on an Intel i& 8750H CPU. Speed may vary according to your CPU and your disk. Though `Slicer` is thread-safe, multi-threading does not seem neccessary due to the I/O bottleneck.
-
+This application runs over 400x faster than real-time on an Intel i7 8750H CPU. Speed may vary according to your CPU and your disk.

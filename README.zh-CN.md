@@ -1,104 +1,68 @@
 # 音频切片机
-这是一个 Python 脚本，通过静音检测来分割音频
+一个简约的 GUI 应用程序，通过静音检测对音频进行切片。基于[audio-slicer](https://github.com/openvpi/audio-slicer)
 
 ## 屏幕截图
 
 ![image](./screenshot_1.jpg)
 
-## 算法
+## 用法
 
-### 静音检测
+### Windows
 
-这个脚本使用最大振幅来检测音频的静音部分。**大滑动窗口**用于通过卷积计算原始音频中每个特定区域的最大振幅。最大振幅低于阈值的所有区域将被视为静音。
+- 在[这里](https://github.com/flutydeer/audio-slicer/releases)下载并解压最新版本。
 
-### 音频切片
+- 运行“slicer-gui.exe”。
 
-一旦检测到静音部分，脚本将使用RMS（均方根分数）来确定音频将被切片的特定位置。**小滑动窗口**用于搜索切开音频的最佳位置，即RMS 值最低的位置。长静音部分将被删除。
+### MacOS & Linux
 
-## 安装依赖
+- 克隆此仓库。
 
-```shell
-pip install soundfile
-pip install PySide6
-```
-
-或者
+- 运行以下命令安装环境：
 
 ```shell
 pip install -r requirements.txt
 ```
 
-## 用法
-
-### 使用 Python 调用
-
-```python
-import librosa
-import soundfile
-
-from slicer import Slicer
-
-audio, sr = librosa.load('example.wav', sr=None)  # Load an audio file with librosa
-slicer = Slicer(
-    sr=sr,
-    db_threshold=-30,
-    min_length=5000,
-    win_l=400,
-    win_s=20,
-    max_silence_kept=500
-)
-chunks = slicer.slice(audio)
-for i, chunk in enumerate(chunks):
-    soundfile.write(f'clips/example_{i}.wav', chunk, sr)  # Save sliced audio files with soundfile
-```
-
-### 使用命令行
-
-可以使用以下命令运行脚本：
-
-```shell
-python slicer.py audio [--out OUT] [--db_thresh DB_THRESH] [--min_len MIN_LEN] [--win_l WIN_L] [--win_s WIN_S] [--max_sil_kept MAX_SIL_KEPT]
-```
-
-其中“audio”指的是要切片的音频，“--out”默认为与音频相同的目录，其他选项的默认值如[此处](#参数)所示。
-
-### 使用图形界面
-
-运行以下命令启动图形界面:
+- 运行以下命令启动 GUI：
 
 ```Shell
 python slicer-gui.py
 ```
 
-只需将您的音频文件添加到任务列表中，单击“Start”按钮并等待它完成。进度条无法指示单个任务的进度，因此当任务列表中只有 1 个任务时，它会保持 0% 直到完成。
+只需点击“Add Audio Files...”按钮来添加音频文件，或将它们拖放到窗口中，单击“Start”按钮并等待任务完成。进度条无法指示单个任务的进度，因此当任务列表中只有1个任务时，它会保持0%直到完成。
+## 算法
+
+### 静音检测
+
+本应用根据 RMS（均方根）来测量音频的安静度并检测静音部分，计算每个帧的 RMS 值（帧长度设为 **hop size（跳跃步长）**），RMS 低于 **threshold（阈值）** 的所有帧都将被视为静默帧。
+
+### 音频切片
+
+一旦检测到自上次切片以来的有效（声音）部分达到 **（min length）最小长度** ，且长度超过 **min interval（最小间距）** 的静音部分，该音频将从静音区域内 RMS 值最低的帧脱离出来。长时间静音的部分可能会被删除。
+
 
 ## 参数
 
-### sr
+### Threshold（阈值）
 
-输入音频的采样率。
+以 dB 表示的 RMS 阈值。所有 RMS 值都低于此阈值的区域将被视为静音。如果音频有噪音，请增加此值。默认值为 -40。
 
-### db_threshold
+### Minimum Length（最小长度）
 
-振幅阈值以 dB 表示。所有振幅低于该阈值的区域将被视为静音。如果音频有噪音，请提高此值。默认值为 -40。
+每个切片音频剪辑所需的最小长度，以毫秒为单位。默认值为 5000。
 
-### min_length
+### Minimum Interval（最小间距）
 
+要切片的静音部分的最小长度，以毫秒为单位。如果音频仅包含短暂的中断，请将此值设置得更小。此值越小，此应用程序可能生成的切片音频剪辑就越多。请注意，此值必须小于 min length 且大于 hop size。默认值为 300。
 
-每个音频切片所需的最小长度，单位为毫秒。默认值为 5000。
+### Hop Size（跳跃步长）
 
-### win_l
+每个 RMS 帧的长度，以毫秒为单位。增加此值将提高切片的精度，但会降低处理速度。默认值为 10。
 
-大滑动窗口的大小，单位为毫秒。如果音频仅包含较短的停顿，请将此值调小。该值越小，此脚本可能生成的音频片段片段就越多。请注意，该值必须小于 min_length 且大于 win_s。默认值为 300。
+### Maximum Silence Length（最大静音长度）
 
-### win_s
-
-小滑动窗口的大小，单位为毫秒。通常不需要修改此值。默认值为 20。
-
-### max_silence_kept
-
-切片音频头尾出最多被保留的静音长度，单位为毫秒。根据需要调整此值。请注意，设置此值并不意味着切片音频中的静音部分恰好具有给定的长度。如上所述，该算法将搜索最佳切片位置。默认值为 1000。
+在切片音频周围保持的最大静音长度，以毫秒为单位。根据需要调整此值。请注意，设置此值并不意味着切片音频中的静音部分具有完全给定的长度。如上所述，该算法将搜索要切片的最佳位置。默认值为 1000。
 
 ## 性能
 
-此脚本在 Python 层面包含一个时间复杂度为 $ O (n) $ 的主循环，其中  $ n $ 是音频的总采样数。除了这个瓶颈之外，所有繁重的计算都是由C++ 层面的 NumPy 和 SciPy 完成的。因此，此脚本在 Intel i7 8750H CPU 上能实现约 0.02~0.10 的 RTF（实时因子）。此外，由于 `Slicer` 类是线程安全的，使用多线程可能会进一步提高运行速度。
+此应用程序在 Intel i7 8750H CPU 上的运行速度超过 400 倍于实时。速度可能因 CPU 和磁盘而异。
