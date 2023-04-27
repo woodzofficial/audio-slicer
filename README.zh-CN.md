@@ -1,5 +1,5 @@
 # 音频切片机
-一个简约的 GUI 应用程序，通过静音检测对音频进行切片。基于[audio-slicer](https://github.com/openvpi/audio-slicer)
+一个简约的 GUI 应用程序，通过静音检测对音频进行切片。
 
 ## 屏幕截图
 

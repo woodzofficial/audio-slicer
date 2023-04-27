@@ -1,6 +1,6 @@
 # Audio Slicer
 
-A simple GUI application that slices audio with silence detection, based on [audio-slicer](https://github.com/openvpi/audio-slicer).
+A simple GUI application that slices audio with silence detection.
 
 [中文文档](./README.zh-CN.md)
 
