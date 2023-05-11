@@ -72,14 +72,28 @@
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
            </property>
+           <property name="selectionMode">
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButtonClearList">
-           <property name="text">
-            <string>Clear List</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QPushButton" name="btnRemove">
+             <property name="text">
+              <string>Remove</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonClearList">
+             <property name="text">
+              <string>Clear List</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>

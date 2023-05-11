@@ -18,7 +18,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QApplication, QFormLayout, QFrame, QGroupBox,
     QHBoxLayout, QLabel, QLineEdit, QListWidget,
     QListWidgetItem, QMainWindow, QProgressBar, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget, QAbstractItemView)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -66,13 +66,24 @@ class Ui_MainWindow(object):
         self.listWidgetTaskList = QListWidget(self.groupBox)
         self.listWidgetTaskList.setObjectName(u"listWidgetTaskList")
         self.listWidgetTaskList.setFrameShadow(QFrame.Plain)
+        self.listWidgetTaskList.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
         self.verticalLayout_2.addWidget(self.listWidgetTaskList)
+
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.btnRemove = QPushButton(self.groupBox)
+        self.btnRemove.setObjectName(u"btnRemove")
+
+        self.horizontalLayout_5.addWidget(self.btnRemove)
 
         self.pushButtonClearList = QPushButton(self.groupBox)
         self.pushButtonClearList.setObjectName(u"pushButtonClearList")
 
-        self.verticalLayout_2.addWidget(self.pushButtonClearList)
+        self.horizontalLayout_5.addWidget(self.pushButtonClearList)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_5)
 
 
         self.horizontalLayout.addWidget(self.groupBox)
@@ -206,6 +217,7 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.pushButtonAddFiles.setText(QCoreApplication.translate("MainWindow", u"Add Audio Files...", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Task List", None))
+        self.btnRemove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.pushButtonClearList.setText(QCoreApplication.translate("MainWindow", u"Clear List", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Threshold (dB)", None))
@@ -224,3 +236,4 @@ class Ui_MainWindow(object):
         self.pushButtonAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
         self.pushButtonStart.setText(QCoreApplication.translate("MainWindow", u"Start", None))
     # retranslateUi
+
