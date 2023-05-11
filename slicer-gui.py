@@ -5,7 +5,9 @@ import datetime
 from PySide6 import QtCore
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QFont
+from PySide6.QtWidgets import QStyleFactory
 
+import qdarktheme
 import gui.mainwindow
 
 if __name__ == '__main__':
@@ -21,9 +23,14 @@ if __name__ == '__main__':
     app.setApplicationName("Audio Slicer")
     app.setApplicationDisplayName("Audio Slicer")
 
+    qdarktheme.setup_theme("auto")
+
     font = QFont('Microsoft YaHei UI')
     font.setPixelSize(12)
     app.setFont(font)
+
+    # style = QStyleFactory.create("fusion")
+    # app.setStyle(style)
 
     window = gui.mainwindow.MainWindow()
     window.show()
