@@ -22,6 +22,7 @@ class MainWindow(QMainWindow):
 
         self.ui.pushButtonAddFiles.clicked.connect(self._q_add_audio_files)
         self.ui.pushButtonBrowse.clicked.connect(self._q_browse_output_dir)
+        self.ui.btnRemove.clicked.connect(self._remove_audio_file)
         self.ui.pushButtonClearList.clicked.connect(self._q_clear_audio_list)
         self.ui.pushButtonAbout.clicked.connect(self._q_about)
         self.ui.pushButtonStart.clicked.connect(self._q_start)
@@ -29,6 +30,7 @@ class MainWindow(QMainWindow):
         self.ui.progressBar.setMinimum(0)
         self.ui.progressBar.setMaximum(100)
         self.ui.progressBar.setValue(0)
+        self.ui.pushButtonStart.setDefault(True)
 
         validator = QRegularExpressionValidator(QRegularExpression(r"\d+"))
         self.ui.lineEditThreshold.setValidator(QDoubleValidator())
@@ -67,6 +69,11 @@ class MainWindow(QMainWindow):
             # Save full path at custom role
             item.setData(Qt.ItemDataRole.UserRole + 1, path)
             self.ui.listWidgetTaskList.addItem(item)
+
+    def _remove_audio_file(self):
+        selectedItems = self.ui.listWidgetTaskList.selectedItems
+        
+        return
 
     def _q_clear_audio_list(self):
         if self.processing:
