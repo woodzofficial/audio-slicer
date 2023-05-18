@@ -34,16 +34,16 @@ class Ui_MainWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.pushButtonAddFiles = QPushButton(self.centralwidget)
-        self.pushButtonAddFiles.setObjectName(u"pushButtonAddFiles")
-        self.pushButtonAddFiles.setEnabled(True)
+        self.btnAddFiles = QPushButton(self.centralwidget)
+        self.btnAddFiles.setObjectName(u"btnAddFiles")
+        self.btnAddFiles.setEnabled(True)
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButtonAddFiles.sizePolicy().hasHeightForWidth())
-        self.pushButtonAddFiles.setSizePolicy(sizePolicy)
+        sizePolicy.setHeightForWidth(self.btnAddFiles.sizePolicy().hasHeightForWidth())
+        self.btnAddFiles.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_2.addWidget(self.pushButtonAddFiles)
+        self.horizontalLayout_2.addWidget(self.btnAddFiles)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -63,12 +63,12 @@ class Ui_MainWindow(object):
         self.groupBox.setSizePolicy(sizePolicy1)
         self.verticalLayout_2 = QVBoxLayout(self.groupBox)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.listWidgetTaskList = QListWidget(self.groupBox)
-        self.listWidgetTaskList.setObjectName(u"listWidgetTaskList")
-        self.listWidgetTaskList.setFrameShadow(QFrame.Plain)
-        self.listWidgetTaskList.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.lwTaskList = QListWidget(self.groupBox)
+        self.lwTaskList.setObjectName(u"lwTaskList")
+        self.lwTaskList.setFrameShadow(QFrame.Plain)
+        self.lwTaskList.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
-        self.verticalLayout_2.addWidget(self.listWidgetTaskList)
+        self.verticalLayout_2.addWidget(self.lwTaskList)
 
         self.horizontalLayout_5 = QHBoxLayout()
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
@@ -77,10 +77,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_5.addWidget(self.btnRemove)
 
-        self.pushButtonClearList = QPushButton(self.groupBox)
-        self.pushButtonClearList.setObjectName(u"pushButtonClearList")
+        self.btnClearList = QPushButton(self.groupBox)
+        self.btnClearList.setObjectName(u"btnClearList")
 
-        self.horizontalLayout_5.addWidget(self.pushButtonClearList)
+        self.horizontalLayout_5.addWidget(self.btnClearList)
 
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_5)
@@ -101,55 +101,55 @@ class Ui_MainWindow(object):
 
         self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_2)
 
-        self.lineEditThreshold = QLineEdit(self.groupBox_2)
-        self.lineEditThreshold.setObjectName(u"lineEditThreshold")
-        self.lineEditThreshold.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.leThreshold = QLineEdit(self.groupBox_2)
+        self.leThreshold.setObjectName(u"leThreshold")
+        self.leThreshold.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.lineEditThreshold)
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.leThreshold)
 
         self.label_3 = QLabel(self.groupBox_2)
         self.label_3.setObjectName(u"label_3")
 
         self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_3)
 
-        self.lineEditMinLen = QLineEdit(self.groupBox_2)
-        self.lineEditMinLen.setObjectName(u"lineEditMinLen")
-        self.lineEditMinLen.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
-
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.lineEditMinLen)
-
         self.label_4 = QLabel(self.groupBox_2)
         self.label_4.setObjectName(u"label_4")
 
         self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_4)
 
-        self.lineEditMinInterval = QLineEdit(self.groupBox_2)
-        self.lineEditMinInterval.setObjectName(u"lineEditMinInterval")
-        self.lineEditMinInterval.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.leMinInterval = QLineEdit(self.groupBox_2)
+        self.leMinInterval.setObjectName(u"leMinInterval")
+        self.leMinInterval.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.lineEditMinInterval)
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.leMinInterval)
 
         self.label_5 = QLabel(self.groupBox_2)
         self.label_5.setObjectName(u"label_5")
 
         self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_5)
 
-        self.lineEditHopSize = QLineEdit(self.groupBox_2)
-        self.lineEditHopSize.setObjectName(u"lineEditHopSize")
-        self.lineEditHopSize.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.leHopSize = QLineEdit(self.groupBox_2)
+        self.leHopSize.setObjectName(u"leHopSize")
+        self.leHopSize.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.lineEditHopSize)
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.leHopSize)
 
         self.label_6 = QLabel(self.groupBox_2)
         self.label_6.setObjectName(u"label_6")
 
         self.formLayout.setWidget(4, QFormLayout.LabelRole, self.label_6)
 
-        self.lineEditMaxSilence = QLineEdit(self.groupBox_2)
-        self.lineEditMaxSilence.setObjectName(u"lineEditMaxSilence")
-        self.lineEditMaxSilence.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+        self.leMaxSilence = QLineEdit(self.groupBox_2)
+        self.leMaxSilence.setObjectName(u"leMaxSilence")
+        self.leMaxSilence.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
 
-        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.lineEditMaxSilence)
+        self.formLayout.setWidget(4, QFormLayout.FieldRole, self.leMaxSilence)
+
+        self.leMinLen = QLineEdit(self.groupBox_2)
+        self.leMinLen.setObjectName(u"leMinLen")
+        self.leMinLen.setAlignment(Qt.AlignRight|Qt.AlignTrailing|Qt.AlignVCenter)
+
+        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.leMinLen)
 
 
         self.verticalLayout_3.addLayout(self.formLayout)
@@ -161,16 +161,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.lineEditOutputDir = QLineEdit(self.groupBox_2)
-        self.lineEditOutputDir.setObjectName(u"lineEditOutputDir")
-        self.lineEditOutputDir.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
+        self.leOutputDir = QLineEdit(self.groupBox_2)
+        self.leOutputDir.setObjectName(u"leOutputDir")
+        self.leOutputDir.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
 
-        self.horizontalLayout_4.addWidget(self.lineEditOutputDir)
+        self.horizontalLayout_4.addWidget(self.leOutputDir)
 
-        self.pushButtonBrowse = QPushButton(self.groupBox_2)
-        self.pushButtonBrowse.setObjectName(u"pushButtonBrowse")
+        self.btnBrowse = QPushButton(self.groupBox_2)
+        self.btnBrowse.setObjectName(u"btnBrowse")
 
-        self.horizontalLayout_4.addWidget(self.pushButtonBrowse)
+        self.horizontalLayout_4.addWidget(self.btnBrowse)
 
 
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
@@ -187,10 +187,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.pushButtonAbout = QPushButton(self.centralwidget)
-        self.pushButtonAbout.setObjectName(u"pushButtonAbout")
+        self.btnAbout = QPushButton(self.centralwidget)
+        self.btnAbout.setObjectName(u"btnAbout")
 
-        self.horizontalLayout_3.addWidget(self.pushButtonAbout)
+        self.horizontalLayout_3.addWidget(self.btnAbout)
 
         self.progressBar = QProgressBar(self.centralwidget)
         self.progressBar.setObjectName(u"progressBar")
@@ -198,10 +198,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.progressBar)
 
-        self.pushButtonStart = QPushButton(self.centralwidget)
-        self.pushButtonStart.setObjectName(u"pushButtonStart")
+        self.btnStart = QPushButton(self.centralwidget)
+        self.btnStart.setObjectName(u"btnStart")
 
-        self.horizontalLayout_3.addWidget(self.pushButtonStart)
+        self.horizontalLayout_3.addWidget(self.btnStart)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
@@ -215,25 +215,25 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.pushButtonAddFiles.setText(QCoreApplication.translate("MainWindow", u"Add Audio Files...", None))
+        self.btnAddFiles.setText(QCoreApplication.translate("MainWindow", u"Add Audio Files...", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Task List", None))
         self.btnRemove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
-        self.pushButtonClearList.setText(QCoreApplication.translate("MainWindow", u"Clear List", None))
+        self.btnClearList.setText(QCoreApplication.translate("MainWindow", u"Clear List", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Threshold (dB)", None))
-        self.lineEditThreshold.setText(QCoreApplication.translate("MainWindow", u"-40", None))
+        self.leThreshold.setText(QCoreApplication.translate("MainWindow", u"-40", None))
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"Minimum Length (ms)", None))
-        self.lineEditMinLen.setText(QCoreApplication.translate("MainWindow", u"5000", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Minimum Interval (ms)", None))
-        self.lineEditMinInterval.setText(QCoreApplication.translate("MainWindow", u"300", None))
+        self.leMinInterval.setText(QCoreApplication.translate("MainWindow", u"300", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Hop Size (ms)", None))
-        self.lineEditHopSize.setText(QCoreApplication.translate("MainWindow", u"10", None))
+        self.leHopSize.setText(QCoreApplication.translate("MainWindow", u"10", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Maximum Silence Length (ms)", None))
-        self.lineEditMaxSilence.setText(QCoreApplication.translate("MainWindow", u"1000", None))
+        self.leMaxSilence.setText(QCoreApplication.translate("MainWindow", u"1000", None))
+        self.leMinLen.setText(QCoreApplication.translate("MainWindow", u"5000", None))
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Output Directory (default to the same as the audio)", None))
-        self.lineEditOutputDir.setText("")
-        self.pushButtonBrowse.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
-        self.pushButtonAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
-        self.pushButtonStart.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.leOutputDir.setText("")
+        self.btnBrowse.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
+        self.btnAbout.setText(QCoreApplication.translate("MainWindow", u"About...", None))
+        self.btnStart.setText(QCoreApplication.translate("MainWindow", u"Start", None))
     # retranslateUi
 

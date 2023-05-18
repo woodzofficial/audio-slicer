@@ -23,7 +23,7 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="pushButtonAddFiles">
+       <widget class="QPushButton" name="btnAddFiles">
         <property name="enabled">
          <bool>true</bool>
         </property>
@@ -68,7 +68,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="QListWidget" name="listWidgetTaskList">
+          <widget class="QListWidget" name="lwTaskList">
            <property name="frameShadow">
             <enum>QFrame::Plain</enum>
            </property>
@@ -87,7 +87,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButtonClearList">
+            <widget class="QPushButton" name="btnClearList">
              <property name="text">
               <string>Clear List</string>
              </property>
@@ -120,7 +120,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QLineEdit" name="lineEditThreshold">
+            <widget class="QLineEdit" name="leThreshold">
              <property name="text">
               <string>-40</string>
              </property>
@@ -136,16 +136,6 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEditMinLen">
-             <property name="text">
-              <string>5000</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_4">
              <property name="text">
@@ -154,7 +144,7 @@
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEditMinInterval">
+            <widget class="QLineEdit" name="leMinInterval">
              <property name="text">
               <string>300</string>
              </property>
@@ -171,7 +161,7 @@
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="QLineEdit" name="lineEditHopSize">
+            <widget class="QLineEdit" name="leHopSize">
              <property name="text">
               <string>10</string>
              </property>
@@ -188,9 +178,19 @@
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="QLineEdit" name="lineEditMaxSilence">
+            <widget class="QLineEdit" name="leMaxSilence">
              <property name="text">
               <string>1000</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="leMinLen">
+             <property name="text">
+              <string>5000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -209,7 +209,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_4">
            <item>
-            <widget class="QLineEdit" name="lineEditOutputDir">
+            <widget class="QLineEdit" name="leOutputDir">
              <property name="text">
               <string/>
              </property>
@@ -219,7 +219,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButtonBrowse">
+            <widget class="QPushButton" name="btnBrowse">
              <property name="text">
               <string>Browse...</string>
              </property>
@@ -248,9 +248,9 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="pushButtonAbout">
+       <widget class="QPushButton" name="btnAbout">
         <property name="text">
-         <string>About</string>
+         <string>About...</string>
         </property>
        </widget>
       </item>
@@ -262,7 +262,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButtonStart">
+       <widget class="QPushButton" name="btnStart">
         <property name="text">
          <string>Start</string>
         </property>

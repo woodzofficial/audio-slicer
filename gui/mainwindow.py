@@ -20,24 +20,24 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.pushButtonAddFiles.clicked.connect(self._q_add_audio_files)
-        self.ui.pushButtonBrowse.clicked.connect(self._q_browse_output_dir)
-        self.ui.btnRemove.clicked.connect(self._remove_audio_file)
-        self.ui.pushButtonClearList.clicked.connect(self._q_clear_audio_list)
-        self.ui.pushButtonAbout.clicked.connect(self._q_about)
-        self.ui.pushButtonStart.clicked.connect(self._q_start)
+        self.ui.btnAddFiles.clicked.connect(self.on_add_audio_files)
+        self.ui.btnBrowse.clicked.connect(self.on_browse_output_dir)
+        self.ui.btnRemove.clicked.connect(self.on_remove_audio_file)
+        self.ui.btnClearList.clicked.connect(self.on_clear_audio_list)
+        self.ui.btnAbout.clicked.connect(self.on_about)
+        self.ui.btnStart.clicked.connect(self.on_start)
 
         self.ui.progressBar.setMinimum(0)
         self.ui.progressBar.setMaximum(100)
         self.ui.progressBar.setValue(0)
-        self.ui.pushButtonStart.setDefault(True)
+        self.ui.btnStart.setDefault(True)
 
         validator = QRegularExpressionValidator(QRegularExpression(r"\d+"))
-        self.ui.lineEditThreshold.setValidator(QDoubleValidator())
-        self.ui.lineEditMinLen.setValidator(validator)
-        self.ui.lineEditMinInterval.setValidator(validator)
-        self.ui.lineEditHopSize.setValidator(validator)
-        self.ui.lineEditMaxSilence.setValidator(validator)
+        self.ui.leThreshold.setValidator(QDoubleValidator())
+        self.ui.leMinLen.setValidator(validator)
+        self.ui.leMinInterval.setValidator(validator)
+        self.ui.leHopSize.setValidator(validator)
+        self.ui.leMaxSilence.setValidator(validator)
 
         # State variables
         self.workers: list[QThread] = []
@@ -50,13 +50,13 @@ class MainWindow(QMainWindow):
         # Must set to accept drag and drop events
         self.setAcceptDrops(True)
 
-    def _q_browse_output_dir(self):
+    def on_browse_output_dir(self):
         path = QFileDialog.getExistingDirectory(
             self, "Browse Output Directory", ".")
         if path != "":
-            self.ui.lineEditOutputDir.setText(QDir.toNativeSeparators(path))
+            self.ui.leOutputDir.setText(QDir.toNativeSeparators(path))
 
-    def _q_add_audio_files(self):
+    def on_add_audio_files(self):
         if self.processing:
             self.warningProcessNotFinished()
             return
@@ -68,30 +68,30 @@ class MainWindow(QMainWindow):
             item.setText(QFileInfo(path).fileName())
             # Save full path at custom role
             item.setData(Qt.ItemDataRole.UserRole + 1, path)
-            self.ui.listWidgetTaskList.addItem(item)
+            self.ui.lwTaskList.addItem(item)
 
-    def _remove_audio_file(self):
-        selectedItems = self.ui.listWidgetTaskList.selectedItems
+    def on_remove_audio_file(self):
+        selectedItems = self.ui.lwTaskList.selectedItems
         
         return
 
-    def _q_clear_audio_list(self):
+    def on_clear_audio_list(self):
         if self.processing:
             self.warningProcessNotFinished()
             return
 
-        self.ui.listWidgetTaskList.clear()
+        self.ui.lwTaskList.clear()
 
-    def _q_about(self):
+    def on_about(self):
         QMessageBox.information(
             self, "About", "Audio Slicer v1.1.0\nCopyright 2020-2023 OpenVPI Team")
 
-    def _q_start(self):
+    def on_start(self):
         if self.processing:
             self.warningProcessNotFinished()
             return
 
-        item_count = self.ui.listWidgetTaskList.count()
+        item_count = self.ui.lwTaskList.count()
         if item_count == 0:
             return
 
@@ -113,15 +113,15 @@ class MainWindow(QMainWindow):
                         audio = audio.T
                     slicer = Slicer(
                         sr=sr,
-                        threshold=float(self.win.ui.lineEditThreshold.text()),
-                        min_length=int(self.win.ui.lineEditMinLen.text()),
+                        threshold=float(self.win.ui.leThreshold.text()),
+                        min_length=int(self.win.ui.leMinLen.text()),
                         min_interval=int(
-                            self.win.ui.lineEditMinInterval.text()),
-                        hop_size=int(self.win.ui.lineEditHopSize.text()),
-                        max_sil_kept=int(self.win.ui.lineEditMaxSilence.text())
+                            self.win.ui.leMinInterval.text()),
+                        hop_size=int(self.win.ui.leHopSize.text()),
+                        max_sil_kept=int(self.win.ui.leMaxSilence.text())
                     )
                     chunks = slicer.slice(audio)
-                    out_dir = self.win.ui.lineEditOutputDir.text()
+                    out_dir = self.win.ui.leOutputDir.text()
                     if out_dir == '':
                         out_dir = os.path.dirname(os.path.abspath(filename))
                     else:
@@ -142,7 +142,7 @@ class MainWindow(QMainWindow):
         # Collect paths
         paths: list[str] = []
         for i in range(0, item_count):
-            item = self.ui.listWidgetTaskList.item(i)
+            item = self.ui.lwTaskList.item(i)
             path = item.data(Qt.ItemDataRole.UserRole + 1)  # Get full path
             paths.append(path)
 
@@ -155,17 +155,17 @@ class MainWindow(QMainWindow):
 
         # Start work thread
         worker = WorkThread(paths, self)
-        worker.oneFinished.connect(self._q_oneFinished)
-        worker.finished.connect(self._q_threadFinished)
+        worker.oneFinished.connect(self.oneFinished)
+        worker.finished.connect(self.threadFinished)
         worker.start()
 
         self.workers.append(worker)  # Collect in case of auto deletion
 
-    def _q_oneFinished(self):
+    def oneFinished(self):
         self.workFinished += 1
         self.ui.progressBar.setValue(self.workFinished)
 
-    def _q_threadFinished(self):
+    def threadFinished(self):
         # Join all workers
         for worker in self.workers:
             worker.wait()
@@ -181,19 +181,19 @@ class MainWindow(QMainWindow):
 
     def setProcessing(self, processing: bool):
         enabled = not processing
-        self.ui.pushButtonStart.setText(
+        self.ui.btnStart.setText(
             "Slicing..." if processing else "Start")
-        self.ui.pushButtonStart.setEnabled(enabled)
-        self.ui.pushButtonAddFiles.setEnabled(enabled)
-        self.ui.listWidgetTaskList.setEnabled(enabled)
-        self.ui.pushButtonClearList.setEnabled(enabled)
-        self.ui.lineEditThreshold.setEnabled(enabled)
-        self.ui.lineEditMinLen.setEnabled(enabled)
-        self.ui.lineEditMinInterval.setEnabled(enabled)
-        self.ui.lineEditHopSize.setEnabled(enabled)
-        self.ui.lineEditMaxSilence.setEnabled(enabled)
-        self.ui.lineEditOutputDir.setEnabled(enabled)
-        self.ui.pushButtonBrowse.setEnabled(enabled)
+        self.ui.btnStart.setEnabled(enabled)
+        self.ui.btnAddFiles.setEnabled(enabled)
+        self.ui.lwTaskList.setEnabled(enabled)
+        self.ui.btnClearList.setEnabled(enabled)
+        self.ui.leThreshold.setEnabled(enabled)
+        self.ui.leMinLen.setEnabled(enabled)
+        self.ui.leMinInterval.setEnabled(enabled)
+        self.ui.leHopSize.setEnabled(enabled)
+        self.ui.leMaxSilence.setEnabled(enabled)
+        self.ui.leOutputDir.setEnabled(enabled)
+        self.ui.btnBrowse.setEnabled(enabled)
         self.processing = processing
 
     # Event Handlers
@@ -229,4 +229,4 @@ class MainWindow(QMainWindow):
             item.setText(QFileInfo(path).fileName())
             item.setData(Qt.ItemDataRole.UserRole + 1,
                          path)
-            self.ui.listWidgetTaskList.addItem(item)
+            self.ui.lwTaskList.addItem(item)
