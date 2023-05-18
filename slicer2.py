@@ -68,8 +68,7 @@ class Slicer:
         else:
             return waveform[begin * self.hop_size: min(waveform.shape[0], end * self.hop_size)]
 
-    # @timeit
-    def slice(self, waveform):
+    def get_slice_tags(self, waveform):
         if len(waveform.shape) > 1:
             samples = waveform.mean(axis=0)
         else:
@@ -130,6 +129,10 @@ class Slicer:
             silence_end = min(total_frames, silence_start + self.max_sil_kept)
             pos = rms_list[silence_start: silence_end + 1].argmin() + silence_start
             sil_tags.append((pos, total_frames + 1))
+        return sil_tags, total_frames
+
+    # @timeit
+    def slice(self, waveform, sil_tags, total_frames):
         # Apply and return slices.
         if len(sil_tags) == 0:
             return [waveform]

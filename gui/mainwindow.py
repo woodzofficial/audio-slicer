@@ -20,12 +20,12 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.btnAddFiles.clicked.connect(self.on_add_audio_files)
-        self.ui.btnBrowse.clicked.connect(self.on_browse_output_dir)
-        self.ui.btnRemove.clicked.connect(self.on_remove_audio_file)
-        self.ui.btnClearList.clicked.connect(self.on_clear_audio_list)
-        self.ui.btnAbout.clicked.connect(self.on_about)
-        self.ui.btnStart.clicked.connect(self.on_start)
+        self.ui.btnAddFiles.clicked.connect(self._on_add_audio_files)
+        self.ui.btnBrowse.clicked.connect(self._on_browse_output_dir)
+        self.ui.btnRemove.clicked.connect(self._on_remove_audio_file)
+        self.ui.btnClearList.clicked.connect(self._on_clear_audio_list)
+        self.ui.btnAbout.clicked.connect(self._on_about)
+        self.ui.btnStart.clicked.connect(self._on_start)
 
         self.ui.progressBar.setMinimum(0)
         self.ui.progressBar.setMaximum(100)
@@ -50,15 +50,15 @@ class MainWindow(QMainWindow):
         # Must set to accept drag and drop events
         self.setAcceptDrops(True)
 
-    def on_browse_output_dir(self):
+    def _on_browse_output_dir(self):
         path = QFileDialog.getExistingDirectory(
             self, "Browse Output Directory", ".")
         if path != "":
             self.ui.leOutputDir.setText(QDir.toNativeSeparators(path))
 
-    def on_add_audio_files(self):
+    def _on_add_audio_files(self):
         if self.processing:
-            self.warningProcessNotFinished()
+            self._warningProcessNotFinished()
             return
 
         paths, _ = QFileDialog.getOpenFileNames(
@@ -70,25 +70,25 @@ class MainWindow(QMainWindow):
             item.setData(Qt.ItemDataRole.UserRole + 1, path)
             self.ui.lwTaskList.addItem(item)
 
-    def on_remove_audio_file(self):
+    def _on_remove_audio_file(self):
         selectedItems = self.ui.lwTaskList.selectedItems
         
         return
 
-    def on_clear_audio_list(self):
+    def _on_clear_audio_list(self):
         if self.processing:
-            self.warningProcessNotFinished()
+            self._warningProcessNotFinished()
             return
 
         self.ui.lwTaskList.clear()
 
-    def on_about(self):
+    def _on_about(self):
         QMessageBox.information(
             self, "About", "Audio Slicer v1.1.0\nCopyright 2020-2023 OpenVPI Team")
 
-    def on_start(self):
+    def _on_start(self):
         if self.processing:
-            self.warningProcessNotFinished()
+            self._warningProcessNotFinished()
             return
 
         item_count = self.ui.lwTaskList.count()
@@ -120,7 +120,8 @@ class MainWindow(QMainWindow):
                         hop_size=int(self.win.ui.leHopSize.text()),
                         max_sil_kept=int(self.win.ui.leMaxSilence.text())
                     )
-                    chunks = slicer.slice(audio)
+                    sil_tags, total_frames = slicer.get_slice_tags(audio)
+                    chunks = slicer.slice(audio, sil_tags, total_frames)
                     out_dir = self.win.ui.leOutputDir.text()
                     if out_dir == '':
                         out_dir = os.path.dirname(os.path.abspath(filename))
@@ -151,35 +152,35 @@ class MainWindow(QMainWindow):
 
         self.workCount = item_count
         self.workFinished = 0
-        self.setProcessing(True)
+        self._setProcessing(True)
 
         # Start work thread
         worker = WorkThread(paths, self)
-        worker.oneFinished.connect(self.oneFinished)
-        worker.finished.connect(self.threadFinished)
+        worker.oneFinished.connect(self._oneFinished)
+        worker.finished.connect(self._threadFinished)
         worker.start()
 
         self.workers.append(worker)  # Collect in case of auto deletion
 
-    def oneFinished(self):
+    def _oneFinished(self):
         self.workFinished += 1
         self.ui.progressBar.setValue(self.workFinished)
 
-    def threadFinished(self):
+    def _threadFinished(self):
         # Join all workers
         for worker in self.workers:
             worker.wait()
         self.workers.clear()
-        self.setProcessing(False)
+        self._setProcessing(False)
 
         QMessageBox.information(
             self, QApplication.applicationName(), "Slicing complete!")
 
-    def warningProcessNotFinished(self):
+    def _warningProcessNotFinished(self):
         QMessageBox.warning(self, QApplication.applicationName(),
                             "Please wait for slicing to complete!")
 
-    def setProcessing(self, processing: bool):
+    def _setProcessing(self, processing: bool):
         is_enabled = not processing
         self.ui.btnStart.setText(
             "Slicing..." if processing else "Start")
@@ -200,7 +201,7 @@ class MainWindow(QMainWindow):
     # Event Handlers
     def closeEvent(self, event):
         if self.processing:
-            self.warningProcessNotFinished()
+            self._warningProcessNotFinished()
             event.ignore()
 
     def dragEnterEvent(self, event):
