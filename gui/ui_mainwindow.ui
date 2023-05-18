@@ -51,6 +51,13 @@
         </property>
        </spacer>
       </item>
+      <item>
+       <widget class="QPushButton" name="btnAbout">
+        <property name="text">
+         <string>About...</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item>
@@ -248,16 +255,16 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
-       <widget class="QPushButton" name="btnAbout">
-        <property name="text">
-         <string>About...</string>
+       <widget class="QProgressBar" name="progressBar">
+        <property name="value">
+         <number>0</number>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QProgressBar" name="progressBar">
-        <property name="value">
-         <number>0</number>
+       <widget class="QPushButton" name="btnPreview">
+        <property name="text">
+         <string>Preview...</string>
         </property>
        </widget>
       </item>

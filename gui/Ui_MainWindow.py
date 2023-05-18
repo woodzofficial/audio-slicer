@@ -49,6 +49,11 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
+        self.btnAbout = QPushButton(self.centralwidget)
+        self.btnAbout.setObjectName(u"btnAbout")
+
+        self.horizontalLayout_2.addWidget(self.btnAbout)
+
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
@@ -187,16 +192,16 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.btnAbout = QPushButton(self.centralwidget)
-        self.btnAbout.setObjectName(u"btnAbout")
-
-        self.horizontalLayout_3.addWidget(self.btnAbout)
-
         self.progressBar = QProgressBar(self.centralwidget)
         self.progressBar.setObjectName(u"progressBar")
         self.progressBar.setValue(0)
 
         self.horizontalLayout_3.addWidget(self.progressBar)
+
+        self.btnPreview = QPushButton(self.centralwidget)
+        self.btnPreview.setObjectName(u"btnPreview")
+
+        self.horizontalLayout_3.addWidget(self.btnPreview)
 
         self.btnStart = QPushButton(self.centralwidget)
         self.btnStart.setObjectName(u"btnStart")
@@ -216,6 +221,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.btnAddFiles.setText(QCoreApplication.translate("MainWindow", u"Add Audio Files...", None))
+        self.btnAbout.setText(QCoreApplication.translate("MainWindow", u"About...", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Task List", None))
         self.btnRemove.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.btnClearList.setText(QCoreApplication.translate("MainWindow", u"Clear List", None))
@@ -233,7 +239,7 @@ class Ui_MainWindow(object):
         self.label_7.setText(QCoreApplication.translate("MainWindow", u"Output Directory (default to the same as the audio)", None))
         self.leOutputDir.setText("")
         self.btnBrowse.setText(QCoreApplication.translate("MainWindow", u"Browse...", None))
-        self.btnAbout.setText(QCoreApplication.translate("MainWindow", u"About...", None))
+        self.btnPreview.setText(QCoreApplication.translate("MainWindow", u"Preview...", None))
         self.btnStart.setText(QCoreApplication.translate("MainWindow", u"Start", None))
     # retranslateUi
 

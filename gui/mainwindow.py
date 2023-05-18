@@ -180,20 +180,21 @@ class MainWindow(QMainWindow):
                             "Please wait for slicing to complete!")
 
     def setProcessing(self, processing: bool):
-        enabled = not processing
+        is_enabled = not processing
         self.ui.btnStart.setText(
             "Slicing..." if processing else "Start")
-        self.ui.btnStart.setEnabled(enabled)
-        self.ui.btnAddFiles.setEnabled(enabled)
-        self.ui.lwTaskList.setEnabled(enabled)
-        self.ui.btnClearList.setEnabled(enabled)
-        self.ui.leThreshold.setEnabled(enabled)
-        self.ui.leMinLen.setEnabled(enabled)
-        self.ui.leMinInterval.setEnabled(enabled)
-        self.ui.leHopSize.setEnabled(enabled)
-        self.ui.leMaxSilence.setEnabled(enabled)
-        self.ui.leOutputDir.setEnabled(enabled)
-        self.ui.btnBrowse.setEnabled(enabled)
+        self.ui.btnStart.setEnabled(is_enabled)
+        self.ui.btnPreview.setEnabled(is_enabled)
+        self.ui.btnAddFiles.setEnabled(is_enabled)
+        self.ui.lwTaskList.setEnabled(is_enabled)
+        self.ui.btnClearList.setEnabled(is_enabled)
+        self.ui.leThreshold.setEnabled(is_enabled)
+        self.ui.leMinLen.setEnabled(is_enabled)
+        self.ui.leMinInterval.setEnabled(is_enabled)
+        self.ui.leHopSize.setEnabled(is_enabled)
+        self.ui.leMaxSilence.setEnabled(is_enabled)
+        self.ui.leOutputDir.setEnabled(is_enabled)
+        self.ui.btnBrowse.setEnabled(is_enabled)
         self.processing = processing
 
     # Event Handlers
