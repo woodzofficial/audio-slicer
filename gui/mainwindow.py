@@ -65,14 +65,15 @@ class MainWindow(QMainWindow):
             self, 'Select Audio Files', ".", 'Wave Files(*.wav)')
         for path in paths:
             item = QListWidgetItem()
+            item.setSizeHint(QSize(200, 24))
             item.setText(QFileInfo(path).fileName())
             # Save full path at custom role
             item.setData(Qt.ItemDataRole.UserRole + 1, path)
             self.ui.lwTaskList.addItem(item)
 
     def _on_remove_audio_file(self):
-        selectedItems = self.ui.lwTaskList.selectedItems
-        
+        item = self.ui.lwTaskList.currentItem()
+        self.ui.lwTaskList.takeItem(self.ui.lwTaskList.row(item))
         return
 
     def _on_clear_audio_list(self):
@@ -228,6 +229,7 @@ class MainWindow(QMainWindow):
             if ext.lower() != '.wav':
                 continue
             item = QListWidgetItem()
+            item.setSizeHint(QSize(200, 24))
             item.setText(QFileInfo(path).fileName())
             item.setData(Qt.ItemDataRole.UserRole + 1,
                          path)
