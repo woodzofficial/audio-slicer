@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.lwTaskList = QListWidget(self.groupBox)
         self.lwTaskList.setObjectName(u"lwTaskList")
         self.lwTaskList.setFrameShadow(QFrame.Plain)
-        self.lwTaskList.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.lwTaskList.setSelectionMode(QAbstractItemView.SingleSelection)
 
         self.verticalLayout_2.addWidget(self.lwTaskList)
 
@@ -95,8 +95,11 @@ class Ui_MainWindow(object):
 
         self.groupBox_2 = QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName(u"groupBox_2")
-        sizePolicy1.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
-        self.groupBox_2.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.groupBox_2.sizePolicy().hasHeightForWidth())
+        self.groupBox_2.setSizePolicy(sizePolicy2)
         self.verticalLayout_3 = QVBoxLayout(self.groupBox_2)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.formLayout = QFormLayout()
