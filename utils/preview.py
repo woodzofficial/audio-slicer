@@ -1,6 +1,7 @@
 import soundfile
 import numpy as np
 import matplotlib.pyplot as plt
+from audioutil import AudioUtil
 
 
 dark_theme_palette = {
@@ -26,14 +27,17 @@ light_theme_palette = {
 
 
 def showWaveForm(filename):
-    audio_samples, sr = soundfile.read(filename, dtype=np.float32)
+    ori_audio, ori_sr = soundfile.read(filename, dtype=np.float32)
+    # Downsample audio before plotting due to performance issue
+    target_sr = 6000
+    audio_samples = AudioUtil.resample(y=ori_audio, orig_sr=ori_sr, target_sr=target_sr, res_type="soxr_hq")
     is_mono = True
     if len(audio_samples.shape) > 1:
         is_mono = False
         audio_samples = audio_samples.T
     # if is_mono == False:
     # to mono
-    time = np.arange(0, len(audio_samples)) * (1.0 / sr)
+    time = np.arange(0, len(audio_samples)) * (1.0 / target_sr)
 
     palette = dark_theme_palette
     plt.rcParams['toolbar'] = 'None'
@@ -151,4 +155,4 @@ def showWaveForm(filename):
 
 if __name__ == "__main__":
     # showWaveForm("D:/测试/slicer测试音频/2009000334.wav")
-    showWaveForm("D:\\编曲学习\\小小\\小小（伊拾七干声）.wav")
+    showWaveForm("D:\\编曲学习\\小小\\小小（伊拾七干声） - 副本.wav")
