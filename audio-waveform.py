@@ -35,12 +35,16 @@ def showWaveForm(filename):
     # to mono
     time = np.arange(0, len(audio_samples)) * (1.0 / sr)
 
-    palette = light_theme_palette
+    palette = dark_theme_palette
     plt.rcParams['toolbar'] = 'None'
     plt.figure(figsize=(10, 6))
+
+    # Plot Waveform
+    plt.subplot(211)
     plt.plot(time, audio_samples, color=palette['primary'])
     fig = plt.gcf()
     fig.set_facecolor(palette['page_background'])
+    fig.tight_layout(pad=3, w_pad=2, h_pad=3)
     ax = plt.gca()
     ax.set_facecolor(palette['figure_background'])
     ax.spines['top'].set_color(palette['figure_frame'])
@@ -80,15 +84,71 @@ def showWaveForm(filename):
     )
     plt.autoscale(enable=True, axis='x', tight=True)
     plt.ylim((-1, 1))
-    plt.annotate("Slice #1",
+    plt.annotate("#1",
                  xy=(53, 1),
                  xycoords=("data", "axes fraction"),
                  color=palette['accent']
                  )
     plt.axvline(x=53, color=palette['accent'])
+    plt.axvline(x=65, color=palette['accent'])
+
+    # Plot Length Distribution
+    plt.subplot(223)
+    plt.bar(["<2", "<5", "<8", "<11", "<14", "<17", "<20", ">=20"],
+            [1, 5, 7, 11, 13, 7, 5, 1], 
+            color=palette['primary'])
+    ax = plt.gca()
+    ax.set_facecolor(palette['figure_background'])
+    ax.spines['top'].set_color(palette['figure_frame'])
+    ax.spines['bottom'].set_color(palette['figure_frame'])
+    ax.spines['left'].set_color(palette['figure_frame'])
+    ax.spines['right'].set_color(palette['figure_frame'])
+    ax.tick_params(
+        axis='x',
+        color=palette['axis'],
+        labelcolor=palette['axis']
+    )
+    ax.tick_params(
+        axis='y',
+        color=palette['axis'],
+        labelcolor=palette['axis']
+    )
+    plt.title(
+        label='Length Distribution',
+        fontdict={
+            "color": palette['title']
+        }
+    )
+
+    # Plot Length Ranking List
+    plt.subplot(224)
+    plt.barh(["#5", "#1", "#6", "#8", "#12", "#7"],[21, 28, 32, 36, 45, 51], color=palette['primary'])
+    ax = plt.gca()
+    ax.set_facecolor(palette['figure_background'])
+    ax.spines['top'].set_color(palette['figure_frame'])
+    ax.spines['bottom'].set_color(palette['figure_frame'])
+    ax.spines['left'].set_color(palette['figure_frame'])
+    ax.spines['right'].set_color(palette['figure_frame'])
+    ax.tick_params(
+        axis='x',
+        color=palette['axis'],
+        labelcolor=palette['axis']
+    )
+    ax.tick_params(
+        axis='y',
+        color=palette['axis'],
+        labelcolor=palette['axis']
+    )
+    plt.title(
+        label='Length Ranking List',
+        fontdict={
+            "color": palette['title']
+        }
+    )
+    # plt.savefig('preview.png', dpi=300)
     plt.show()
 
 
 if __name__ == "__main__":
     # showWaveForm("D:/测试/slicer测试音频/2009000334.wav")
-    showWaveForm("D:\\编曲学习\\眉间雪\\眉间雪-1-洛天依.wav")
+    showWaveForm("D:\\编曲学习\\小小\\小小（伊拾七干声）.wav")
