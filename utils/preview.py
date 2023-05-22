@@ -25,18 +25,23 @@ light_theme_palette = {
     'grid': '#B0B0B0'
 }
 
+class SlicingPreview:
+    def __init__(self,
+                 filename: str,
+                 sil_tags: list):
+        pass
+
 
 def showWaveForm(filename):
     ori_audio, ori_sr = soundfile.read(filename, dtype=np.float32)
+    if len(ori_audio.shape) > 1:
+        ori_audio = ori_audio.T
+        ori_audio = AudioUtil.to_mono(ori_audio)
+        # ori_audio = ori_audio.mean(axis=0)
+    
     # Downsample audio before plotting due to performance issue
     target_sr = 6000
     audio_samples = AudioUtil.resample(y=ori_audio, orig_sr=ori_sr, target_sr=target_sr, res_type="soxr_hq")
-    is_mono = True
-    if len(audio_samples.shape) > 1:
-        is_mono = False
-        audio_samples = audio_samples.T
-    # if is_mono == False:
-    # to mono
     time = np.arange(0, len(audio_samples)) * (1.0 / target_sr)
 
     palette = dark_theme_palette
@@ -155,4 +160,5 @@ def showWaveForm(filename):
 
 if __name__ == "__main__":
     # showWaveForm("D:/测试/slicer测试音频/2009000334.wav")
-    showWaveForm("D:\\编曲学习\\小小\\小小（伊拾七干声） - 副本.wav")
+    # showWaveForm("D:\\编曲学习\\小小\\小小（伊拾七干声）.wav")
+    showWaveForm("D:\\测试\\slicer测试音频\\Vocal (4).wav")

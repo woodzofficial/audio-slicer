@@ -59,6 +59,11 @@ class AudioUtil:
     def __init__(self):
         pass
 
+    def to_mono(y: np.ndarray) -> np.ndarray:
+        if y.ndim > 1:
+            y = np.mean(y, axis=tuple(range(y.ndim - 1)))
+        return y
+
     def resample(
         y: np.ndarray,
         *,
