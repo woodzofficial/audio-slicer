@@ -37,12 +37,12 @@ def showWaveForm(filename):
 
     palette = light_theme_palette
     plt.rcParams['toolbar'] = 'None'
-    plt.rcParams['axes.facecolor'] = palette['figure_background']
     plt.figure(figsize=(10, 6))
     plt.plot(time, audio_samples, color=palette['primary'])
     fig = plt.gcf()
     fig.set_facecolor(palette['page_background'])
     ax = plt.gca()
+    ax.set_facecolor(palette['figure_background'])
     ax.spines['top'].set_color(palette['figure_frame'])
     ax.spines['bottom'].set_color(palette['figure_frame'])
     ax.spines['left'].set_color(palette['figure_frame'])
