@@ -142,17 +142,19 @@ class SlicingPreview:
                 "color": palette['axis']
             }
         )
-        # plt.ylabel(
-        #     ylabel="Value",
-        #     fontdict={
-        #         "color": palette['axis']
-        #     }
-        # )
+        plt.ylabel(
+            ylabel="dB",
+            fontdict={
+                "color": palette['axis']
+            }
+        )
         plt.grid(
             color=palette['grid']
         )
         plt.autoscale(enable=True, axis='x', tight=True)
         plt.ylim((-1, 1))
+        plt.yticks([-1, -0.707, -0.501, -0.355, -0.126, 0, 0.126, 0.355, 0.501, 0.707, 1],
+                   ['0', '-3', '-6', '-9', '-18', '-INF', '-18', '-9', '-6', '-3', '0'])
         ranges = self._get_ranges(sil_tags=self.sil_tags)
         self.length_list = []
         for i in range(len(ranges)):
