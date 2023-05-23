@@ -53,7 +53,7 @@ class SlicingPreview:
         self.audio_samples = AudioUtil.resample(y=ori_audio, orig_sr=ori_sr, target_sr=target_sr, res_type="soxr_hq")
 
     def _apply_slice(self, begin, end):
-        return [begin * self.hop_size, 
+        return [begin * self.hop_size,
                 min(self.waveform_shape, end * self.hop_size)]
 
     def _get_ranges(self, sil_tags: list):
@@ -68,6 +68,38 @@ class SlicingPreview:
             if sil_tags[-1][1] < self.total_frames:
                 ranges.append(self._apply_slice(sil_tags[-1][1], self.total_frames))
             return ranges
+
+    def _get_length_distribution(self):
+        values = [0, 0, 0, 0, 0, 0, 0, 0]  # range 0-2 2-5 5-8 8-11 11-14 14-17 17-20 20+
+        for length in self.length_list:
+            if length[1] < 2:
+                values[0] += 1
+            elif length[1] < 5:
+                values[1] += 1
+            elif length[1] < 8:
+                values[2] += 1
+            elif length[1] < 11:
+                values[3] += 1
+            elif length[1] < 14:
+                values[4] += 1
+            elif length[1] < 17:
+                values[5] += 1
+            elif length[1] < 20:
+                values[6] += 1
+            else:
+                values[7] += 1
+        return values
+
+    def _get_length_ranking_list(self):
+        items = []
+        values = []
+        self.length_list.sort(key=lambda x: x[1])
+        count = len(self.length_list)
+        cropped_list = self.length_list if count <= 10 else self.length_list[count - 10:]
+        for list_item in cropped_list:
+            items.append(list_item[0])
+            values.append(round(list_item[1], 3))
+        return items, values
 
     def _plot_preview(self, preview_filename: str):
         time = np.arange(0, len(self.audio_samples)) * (1.0 / self.target_sr)
@@ -122,9 +154,12 @@ class SlicingPreview:
         plt.autoscale(enable=True, axis='x', tight=True)
         plt.ylim((-1, 1))
         ranges = self._get_ranges(sil_tags=self.sil_tags)
+        self.length_list = []
         for i in range(len(ranges)):
-            start_pos = ranges[i][0] / 1000.
+            start_pos = ranges[i][0] / 1000.  # Convert ms to s
             end_pos = ranges[i][1] / 1000.
+            length = end_pos - start_pos
+            self.length_list.append(('#' + str(i), length))  # Add length to list
             plt.annotate("#" + str(i),
                          xy=(start_pos, 1),
                          xycoords=("data", "axes fraction"),
@@ -135,13 +170,14 @@ class SlicingPreview:
 
         # Plot Length Distribution
         plt.subplot(223)
-        items = ["<2", "<5", "<8", "<11", "<14", "<17", "<20", ">=20"]
-        values = [1, 5, 7, 11, 13, 7, 5, 1]
-        plt.ylim(0, max(values) / 0.9)
-        plt.bar(items,
-                values,
+        distribution_items = ["<2", "<5", "<8", "<11", "<14", "<17", "<20", ">=20"]
+        # values = [1, 5, 7, 11, 13, 7, 5, 1]
+        len_values = self._get_length_distribution()
+        plt.ylim(0, max(len_values) / 0.9)
+        plt.bar(distribution_items,
+                len_values,
                 color=palette['primary'])
-        for a, b in zip(items, values):
+        for a, b in zip(distribution_items, len_values):
             plt.text(a, b, b, ha='center', va='bottom', fontdict={
                 "color": palette['title']
             })
@@ -170,11 +206,12 @@ class SlicingPreview:
 
         # Plot Length Ranking List
         plt.subplot(224)
-        items = ["#5", "#1", "#6", "#8", "#12", "#7"]
-        values = [21, 28, 32, 36, 45, 51]
-        plt.xlim(0, max(values) / 0.9)
-        plt.barh(items, values, color=palette['primary'])
-        for a, b in zip(items, values):
+        # items = ["#5", "#1", "#6", "#8", "#12", "#7"]
+        # values = [21, 28, 32, 36, 45, 51]
+        ranking_items, ranking_values = self._get_length_ranking_list()
+        plt.xlim(0, max(ranking_values) / 0.9)
+        plt.barh(ranking_items, ranking_values, color=palette['primary'])
+        for a, b in zip(ranking_items, ranking_values):
             plt.text(b, a, b, ha='left', va='center', fontdict={
                 "color": palette['title']
             })
