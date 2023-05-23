@@ -122,14 +122,17 @@ class MainWindow(QMainWindow):
                         hop_size=int(self.win.ui.leHopSize.text()),
                         max_sil_kept=int(self.win.ui.leMaxSilence.text())
                     )
-                    sil_tags, total_frames = slicer.get_slice_tags(audio)
+                    sil_tags, total_frames, waveform_shape = slicer.get_slice_tags(audio)
 
-                    # preview = SlicingPreview(
-                    #     filename=filename,
-                    #     sil_tags=sil_tags,
-                    #     theme='dark'
-                    # )
-                    # preview.save_plot('preview.png')
+                    preview = SlicingPreview(
+                        filename=filename,
+                        sil_tags=sil_tags,
+                        hop_size=int(self.win.ui.leHopSize.text()),
+                        total_frames=total_frames,
+                        waveform_shape=waveform_shape,
+                        theme='dark'
+                    )
+                    preview.save_plot('preview.png')
 
                     chunks = slicer.slice(audio, sil_tags, total_frames)
                     out_dir = self.win.ui.leOutputDir.text()

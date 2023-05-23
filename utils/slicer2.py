@@ -129,7 +129,8 @@ class Slicer:
             silence_end = min(total_frames, silence_start + self.max_sil_kept)
             pos = rms_list[silence_start: silence_end + 1].argmin() + silence_start
             sil_tags.append((pos, total_frames + 1))
-        return sil_tags, total_frames
+        waveform_shape = waveform.shape[1] if len(waveform.shape) > 1 else waveform.shape[0]
+        return sil_tags, total_frames, waveform_shape
 
     # @timeit
     def slice(self, waveform, sil_tags, total_frames):
