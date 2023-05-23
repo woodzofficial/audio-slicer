@@ -8,9 +8,10 @@ from typing import List
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtGui import *
-from slicer2 import Slicer
+from utils.slicer2 import Slicer
 
 from gui.Ui_MainWindow import Ui_MainWindow
+from utils.preview import SlicingPreview
 
 
 class MainWindow(QMainWindow):
@@ -122,6 +123,14 @@ class MainWindow(QMainWindow):
                         max_sil_kept=int(self.win.ui.leMaxSilence.text())
                     )
                     sil_tags, total_frames = slicer.get_slice_tags(audio)
+
+                    # preview = SlicingPreview(
+                    #     filename=filename,
+                    #     sil_tags=sil_tags,
+                    #     theme='dark'
+                    # )
+                    # preview.save_plot('preview.png')
+
                     chunks = slicer.slice(audio, sil_tags, total_frames)
                     out_dir = self.win.ui.leOutputDir.text()
                     if out_dir == '':
