@@ -257,9 +257,16 @@ def showWaveForm(filename):
 
     # Plot Length Distribution
     plt.subplot(223)
-    plt.bar(["<2", "<5", "<8", "<11", "<14", "<17", "<20", ">=20"],
-            [1, 5, 7, 11, 13, 7, 5, 1],
+    items = ["<2", "<5", "<8", "<11", "<14", "<17", "<20", ">=20"]
+    values = [1, 5, 7, 11, 13, 7, 5, 1]
+    plt.ylim(0, max(values) / 0.9)
+    plt.bar(items,
+            values,
             color=palette['primary'])
+    for a, b in zip(items, values):
+        plt.text(a, b, b, ha='center', va='bottom', fontdict={
+            "color": palette['title']
+        })
     ax = plt.gca()
     ax.set_facecolor(palette['figure_background'])
     ax.spines['top'].set_color(palette['figure_frame'])
@@ -285,7 +292,14 @@ def showWaveForm(filename):
 
     # Plot Length Ranking List
     plt.subplot(224)
-    plt.barh(["#5", "#1", "#6", "#8", "#12", "#7"], [21, 28, 32, 36, 45, 51], color=palette['primary'])
+    items = ["#5", "#1", "#6", "#8", "#12", "#7"]
+    values = [21, 28, 32, 36, 45, 51]
+    plt.xlim(0, max(values) / 0.9)
+    plt.barh(items, values, color=palette['primary'])
+    for a, b in zip(items, values):
+        plt.text(b, a, b, ha='left', va='center', fontdict={
+            "color": palette['title']
+        })
     ax = plt.gca()
     ax.set_facecolor(palette['figure_background'])
     ax.spines['top'].set_color(palette['figure_frame'])
